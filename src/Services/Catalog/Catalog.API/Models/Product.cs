@@ -12,6 +12,10 @@ public class Product
     public string ImageFile { get; set; } = default!;
     public decimal Price { get; set; }
 
+    public Product()
+    {
+        
+    }
     public Product(string name, string description, List<string> categories, string imageFile, decimal price)
     {
         Name = name;
