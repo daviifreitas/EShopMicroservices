@@ -2,9 +2,9 @@
 
 public record OrderItemId
 {
-    private OrderItemId(Guid Id) => this.Id = Id;
+    private OrderItemId(Guid value) => Value = value;
 
-    public Guid Id { get; init; }
+    public Guid Value { get; }
 
     public static OrderItemId Of(Guid id)
     {

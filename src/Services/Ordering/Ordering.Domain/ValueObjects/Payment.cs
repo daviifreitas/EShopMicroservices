@@ -27,7 +27,6 @@ public record Payment
         ArgumentNullException.ThrowIfNull(cardNumber);
         ArgumentNullException.ThrowIfNull(cardHolderName);
         ArgumentNullException.ThrowIfNull(cvv);
-        ArgumentOutOfRangeException.ThrowIfEqual(cvv.Length, 3);
         
         return new Payment(cardNumber, cardHolderName, expiration, cvv, paymentMethod);
     }

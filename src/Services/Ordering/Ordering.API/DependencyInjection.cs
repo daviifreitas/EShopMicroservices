@@ -1,4 +1,8 @@
-﻿namespace Ordering.API;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Ordering.Infrastructure.Data;
+
+namespace Ordering.API;
 
 public static class DependencyInjection
 {
@@ -6,5 +10,10 @@ public static class DependencyInjection
     {
         // services.AddControllers();wa
         return services;
+    }
+
+    public static WebApplication UseApiServices(this WebApplication app)
+    {
+        return app;
     }
 }
