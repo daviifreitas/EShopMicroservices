@@ -1,19 +1,31 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Ordering.Infrastructure.Data;
+﻿using BuildingBlocks.Exceptions.Handler;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace Ordering.API;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApiServices(this IServiceCollection services)
+    public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration configuration)
     {
-        // services.AddControllers();wa
+        services.AddCarter();
+        services.AddExceptionHandler<CustomExceptionHandler>();
+        services.AddHealthChecks()
+            .AddSqlServer(configuration.GetConnectionString("Database") ?? string.Empty);
+        
         return services;
     }
 
     public static WebApplication UseApiServices(this WebApplication app)
     {
+        app.MapCarter();
+
+        app.UseExceptionHandler(options => { });
+        
+        app.UseHealthChecks("/health", new HealthCheckOptions()
+        {
+            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+        });
         return app;
     }
 }

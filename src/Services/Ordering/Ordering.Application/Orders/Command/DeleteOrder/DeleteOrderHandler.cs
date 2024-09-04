@@ -10,7 +10,7 @@ public class DeleteOrderHandler(IApplicationDbContext dbContext)
         var order = await dbContext.Orders.FindAsync(orderId);
         if (order == null)
         {
-            throw new NotFoundException(nameof(Order), orderId);
+            throw new OrderNotFoundException(orderId.Value);
         }
 
         dbContext.Orders.Remove(order);

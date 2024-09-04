@@ -29,4 +29,31 @@ public static class OrderExtensions
         });
         return ordersByNameDto;
     }
+
+    public static OrderDto ToOrderDto(this Order order)
+    {
+        return new OrderDto
+        {
+            Id = order.Id.Value,
+            OrderName = order.OrderName.Value,
+            Payment = new PaymentDto(order.Payment.CardNumber, order.Payment.CardHolderName, order.Payment.Expiration,
+                order.Payment.CVV, order.Payment.PaymentMethod),
+            BillingAddress = new AddressDto(order.BillingAddress.FirstName, order.BillingAddress.LastName,
+                order.BillingAddress.EmailAddress ?? "", order.BillingAddress.AddressLine, order.BillingAddress.City,
+                order.BillingAddress.State, order.BillingAddress.Country, order.BillingAddress.ZipCode),
+            CustomerId = order.CustomerId.Value,
+            OrderItems = order.OrderItems.Select(x => new OrderItemDto()
+            {
+                ProductId = x.ProductId.Value,
+                Price = x.Price,
+                Quantity = x.Quantity,
+                OrderId = x.OrderId.Value,
+            }).ToList(),
+            OrderStatus = order.OrderStatus,
+            ShippingAddress = new AddressDto(order.ShippingAddress.FirstName, order.ShippingAddress.LastName,
+                order.ShippingAddress.EmailAddress ?? "", order.ShippingAddress.AddressLine, order.ShippingAddress.City,
+                order.ShippingAddress.State, order.ShippingAddress.Country, order.ShippingAddress.ZipCode),
+            TotalPrice = order.TotalPrice
+        };
+    }
 }
